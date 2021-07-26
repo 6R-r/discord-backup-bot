@@ -1,7 +1,8 @@
 module.exports = {
-    name: "change-language",
-    aliases: ["changelanguage", "dil-değiştir", "dildeğiştir"],
+    name: "dil-değiştir",
+    aliases: ["changelanguage", "change-language", "dildeğiştir"],
     async execute(client, message, args, Discord, config, Embed, db) {
+        message.delete();
         message.channel
             .send(
                 new Embed(
