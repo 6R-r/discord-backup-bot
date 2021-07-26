@@ -3,5 +3,5 @@ module.exports = async client => {
         status: "idle"
     });
 
-    console.log("Bot Aktif!");
+    console.log("Bot Online!");
 };
