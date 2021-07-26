@@ -1,6 +1,6 @@
 module.exports = {
-    name: "dil-değiştir",
-    aliases: ["changelanguage", "change-language", "dildeğiştir"],
+    name: "change-language",
+    aliases: ["changelanguage", "dil-değiştir", "dildeğiştir"],
     async execute(client, message, args, Discord, config, Embed, db) {
         message.delete();
         message.channel
