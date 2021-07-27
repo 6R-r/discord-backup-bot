@@ -2,6 +2,7 @@ const config = require(`../config.json`);
 const Discord = require("discord.js");
 const Embed = require("../utils/Embed");
 const db = require("../utils/database");
+const { MessageButton } = require("discord-buttons");
 
 module.exports = async (client, message) => {
     if (
@@ -22,42 +23,22 @@ module.exports = async (client, message) => {
         client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     if (!db.get(`lang_${message.author.id}`)) {
-        message.channel
-            .send(
-                new Embed(
-                    `:flag_tr: **__TR:__**: Lütfen seçmek istediğiniz dili alttaki emojiler ile belirtiniz.\n:flag_us: **__EN:__** Please indicate the language you want to choose with the emojis below.`
-                )
+        let trButton = new MessageButton()
+            .setLabel("🇹🇷")
+            .setID("tr")
+            .setStyle("red");
+
+        let enButton = new MessageButton()
+            .setLabel("🇺🇸")
+            .setID("en")
+            .setStyle("blurple");
+
+        return message.channel.send({
+            buttons: [trButton, enButton],
+            embed: new Embed(
+                `:flag_tr: **__TR:__**: Lütfen seçmek istediğiniz dili alttaki butonlar ile belirtiniz.\n:flag_us: **__EN:__** Please indicate the language you want to choose with the buttons below.`
             )
-            .then(async function(msg) {
-                let emojiList = ["🇹🇷", "🇺🇸"];
-
-                for (const emoji of emojiList) await msg.react(emoji);
-
-                const reactionCollector = msg.createReactionCollector(
-                    (reaction, user) =>
-                        emojiList.includes(reaction.emoji.name) &&
-                        !user.bot &&
-                        user.id == message.author.id
-                );
-
-                reactionCollector.on("collect", async reaction => {
-                    msg.reactions.removeAll();
-
-                    if (reaction.emoji.name === "🇹🇷") {
-                        db.set(`lang_${message.author.id}`, "tr");
-                        return msg.edit(
-                            new Embed(`<@${message.author.id}> **Türkçe** dili başarıyla seçildi.`)
-                        );
-                    } else if (reaction.emoji.name === "🇺🇸") {
-                        db.set(`lang_${message.author.id}`, "en");
-                        return msg.edit(
-                            new Embed(
-                                `<@${message.author.id}> **English** language has been selected successfully :white_check_mark:`
-                            )
-                        );
-                    }
-                });
-            });
+        });
     }
     if (!command) return;
     else {
