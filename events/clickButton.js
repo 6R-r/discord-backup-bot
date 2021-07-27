@@ -17,4 +17,5 @@ module.exports = (client, button) => {
         );
         db.set(`lang_${button.clicker.id}`, "en");
     }
+    button.defer();
 };
