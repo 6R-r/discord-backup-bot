@@ -1,10 +1,11 @@
 {
-  "name": "bot-altyapi",
+  "name": "backup-bot",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "dependencies": {
     "backup.djs": "^1.0.8",
+    "discord-buttons": "^4.0.0",
     "discord.js": "^12.5.3",
     "fs": "^0.0.1-security"
   },
