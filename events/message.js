@@ -42,29 +42,68 @@ module.exports = async (client, message) => {
     }
     if (!command) return;
     else {
-        if (db.get("bakım") && !config.OWNER.includes(message.author.id))
-            return message.channel
-                .send(
-                    new Embed(
-                        `<@${message.author.id}> Şuanda bakımdayım, bakım sebebi: **${db.get(
-                            "bakım"
-                        )}**`
-                    )
-                )
-                .then(m => m.delete({ timeout: 10000 }));
+        let lang = db.get(`lang_${message.author.id}`);
 
-        if (db.get(`karaliste_${message.author.id}`) && !config.OWNER.includes(message.author.id))
-            return message.channel
-                .send(
-                    new Embed(
-                        `<@${
-                            message.author.id
-                        }> Olamaz! Görünüşe göre kara listeye alınmışsın! Kara liste sebebi: **${db.get(
-                            `karaliste_${message.author.id}`
-                        )}**`
+        if (db.get("bakım") && !config.OWNER.includes(message.author.id)) {
+            if (lang === "tr") {
+                return message.channel
+                    .send(
+                        new Embed(
+                            `<@${message.author.id}> Şuanda bakımdayım, bakım sebebi: **${db.get(
+                                "bakım"
+                            )}**`
+                        )
                     )
-                )
-                .then(m => m.delete({ timeout: 10000 }));
+                    .then(m =>
+                        m.delete({
+                            timeout: 10000
+                        })
+                    );
+            } else if (lang === "en") {
+                return message.channel
+                    .send(
+                        new Embed(
+                            `<@${
+                                message.author.id
+                            }> I am currently in maintenance, the reason for maintenance: **${db.get(
+                                "bakım"
+                            )}**`
+                        )
+                    )
+                    .then(m =>
+                        m.delete({
+                            timeout: 10000
+                        })
+                    );
+            }
+        }
+        if (db.get(`karaliste_${message.author.id}`) && !config.OWNER.includes(message.author.id)) {
+            if (lang === "tr") {
+                return message.channel
+                    .send(
+                        new Embed(
+                            `<@${
+                                message.author.id
+                            }> Olamaz! Görünüşe göre kara listeye alınmışsın! Kara liste sebebi: **${db.get(
+                                `karaliste_${message.author.id}`
+                            )}**`
+                        )
+                    )
+                    .then(m => m.delete({ timeout: 10000 }));
+            } else if (lang === "en") {
+                return message.channel
+                    .send(
+                        new Embed(
+                            `<@${
+                                message.author.id
+                            }> I can not be! Looks like you've been blacklisted! Blacklist reason: **${db.get(
+                                `karaliste_${message.author.id}`
+                            )}**`
+                        )
+                    )
+                    .then(m => m.delete({ timeout: 10000 }));
+            }
+        }
         command.execute(client, message, args, Discord, config, Embed, db);
     }
 };
